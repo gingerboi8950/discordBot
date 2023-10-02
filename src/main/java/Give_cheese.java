@@ -42,7 +42,7 @@ public class Give_cheese
 			SQLcmds.giveCheese(num, userId, AuthorId);
 			SQLcmds.updateSharedCheese(AuthorId, num);
 			embed.setColor(0xF7DF47);
-		    embed.setDescription("You gave " + num + " cheese to " + user + "!\n Their new totla is: **" + total + "**"); 
+		    embed.setDescription("You gave " + num + " cheese to " + user + "!\n Their new total is: **" + total + "**"); 
 		    embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1151316884629758032/cheese_up.png"); 
 		}
 		

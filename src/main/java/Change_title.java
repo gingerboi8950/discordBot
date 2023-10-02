@@ -17,6 +17,9 @@ public class Change_title
 		int sharedCheese = SQLcmds.retrieveSharedCheese(userId);
 		int Mahalo = SQLcmds.retrieveMahaloSecret(userId);
 		int RatSteal = SQLcmds.retrieveBotSecret(userId);
+		
+
+		
 		if(titleID == 100)
 		{
 			if(cheeseCost > userCheese)
