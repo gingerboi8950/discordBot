@@ -1,11 +1,9 @@
 import java.sql.SQLException;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class Set_cheese {
 
-	
 	public static void set_cheese(SlashCommandInteractionEvent event, EmbedBuilder embed) throws SQLException
 	{
 		String userId = event.getOptions().get(0).getAsMember().getId();
@@ -15,7 +13,6 @@ public class Set_cheese {
 		SQLcmds.updateCheese(number, userId);
 		event.deferReply().queue();
 		embed.setColor(0xF7DF47);
-		embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1151316884629758032/cheese_up.png");
 		embed.setDescription(user + "'s cheese has been set to " + number);
 		event.getHook().sendMessageEmbeds(embed.build()).queue();
 	}

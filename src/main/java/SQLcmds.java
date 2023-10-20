@@ -127,22 +127,6 @@ public class SQLcmds
 		}
 	
 	
-	public static String printTitles() throws SQLException
-	{
-		String printCommand = "SELECT title FROM title";
-		Connection connection = DriverManager.getConnection(Important.DB_URL,Important.DB_USERNAME,Important.DB_PASSWORD);
-        ResultSet resultSet = connection.prepareStatement(printCommand).executeQuery(printCommand);
-        String titles = "";
-      
-        while (resultSet.next()) 
-        {
-        	titles = titles + "\n" + resultSet.getString("title"); //Column name is in parenthesis
-        }
-        connection.close();
-        return titles;
-	}
-	
-	
 	public static String retrieveTitle(String userId) throws SQLException
 	{
         String test = "SELECT title.title FROM `player`LEFT JOIN title ON player.titleId = title.titleId WHERE playerId ="+userId;
@@ -175,36 +159,6 @@ public class SQLcmds
         return titleCost;
 		}
 	
-	
-	public static String printCost() throws SQLException
-	{
-        String test = "SELECT cost FROM title WHERE titleId <= 105";
-		Connection connection = DriverManager.getConnection(Important.DB_URL,Important.DB_USERNAME,Important.DB_PASSWORD);
-        ResultSet resultSet = connection.prepareStatement(test).executeQuery(test);
-        String title = "";
-        while (resultSet.next()) 
-        {
-             title = title + "\n"+ resultSet.getString("cost"); //Column name is in parenthesis
-             
-        }
-        connection.close();
-        return title;
-	}
-	
-	public static String printID() throws SQLException
-	{
-        String test = "SELECT titleId FROM title";
-		Connection connection = DriverManager.getConnection(Important.DB_URL,Important.DB_USERNAME,Important.DB_PASSWORD);
-        ResultSet resultSet = connection.prepareStatement(test).executeQuery(test);
-        String title = "";
-        while (resultSet.next()) 
-        {
-             title = title + "\n"+ String.valueOf(resultSet.getInt("titleId")); //Column name is in parenthesis
-             
-        }
-        connection.close();
-        return title;
-	}
 	
 	public static void subtractCheese(int numToSub,String userId) throws SQLException
 	{

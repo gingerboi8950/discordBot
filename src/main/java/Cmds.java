@@ -1,18 +1,8 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.jetbrains.annotations.NotNull;
-
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
-
 public class Cmds extends ListenerAdapter 
 {
 	
@@ -60,7 +50,17 @@ public class Cmds extends ListenerAdapter
 		if(event.getName().equals("daily"))
 			try 
 			{
-				Daily_cheese.daily(event, embed);
+				Time_rewards.daily(event, embed);
+			} 
+			catch (SQLException e2) 
+			{
+				e2.printStackTrace();
+			}
+		
+		if(event.getName().equals("weekly"))
+			try 
+			{
+				Time_rewards.weekly(event, embed);
 			} 
 			catch (SQLException e2) 
 			{
@@ -104,14 +104,7 @@ public class Cmds extends ListenerAdapter
 		
 		if(event.getName().equals("titles"))
 		{
-			try 
-			{
 				Titles.PrintTitles(event, embed);
-			} 
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 		
 		
@@ -136,6 +129,18 @@ public class Cmds extends ListenerAdapter
 			catch (SQLException e)
 			{
 				e.printStackTrace();
+			}
+			
+			if(event.getName().equals("cups"))
+			{
+				try 
+				{
+					Gambling_cmds.cups(event, embed);
+				} 
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}

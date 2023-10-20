@@ -1,8 +1,6 @@
 import java.sql.SQLException;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 public class Change_title 
 {
@@ -18,213 +16,56 @@ public class Change_title
 		int Mahalo = SQLcmds.retrieveMahaloSecret(userId);
 		int RatSteal = SQLcmds.retrieveBotSecret(userId);
 		
-
-		
-		if(titleID == 100)
-		{
-			if(cheeseCost > userCheese)
+        event.deferReply(true).queue();
+		if (titleID >= 100 && titleID <= 109) 
+        {
+			if (isValidTitle(titleID, userCheese, cheeseCost, sharedCheese, stolenCheese, Mahalo, RatSteal)) 
 			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 101)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 102)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 103)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 104)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 105)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 106)
-		{
-			if(cheeseCost > sharedCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			
-		}
-		
-		else if(titleID == 107)
-		{
-			if(cheeseCost > stolenCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(Mahalo != 1)
-		{
-			if(cheeseCost > userCheese)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		
-		else if(titleID == 109)
-		{
-			if(RatSteal != 1)
-			{
-				event.deferReply().queue();
-				embed.setDescription("You do not meet that title's requirements.");
-				embed.setColor(0xF7DF47);
-		        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-			else
-			{
-			SQLcmds.changeTitle(userId, titleID);
-			event.deferReply().queue();
-			embed.setDescription("Your title has been updated");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-			}
-		}
-		//Catches an invalid ID number.
+	            SQLcmds.changeTitle(userId, titleID);
+	            embed.setDescription("Your title has been updated");
+	            embed.setColor(0xF7DF47);
+	            event.getHook().sendMessageEmbeds(embed.build()).queue();
+	        } 
+			else 
+	        {
+	            event.getHook().sendMessage("You do not meet that title's requirements.").setEphemeral(true).queue();
+	        }
+        }
 		else
 		{
-			event.deferReply().queue();
-			embed.setDescription("Not a valid title ID number.");
-			embed.setColor(0xF7DF47);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-		}
-		
-		
-		
-		
+            event.getHook().sendMessage("Not a valid title ID.").setEphemeral(true).queue();
 
-		
-		
-	}
-	
+		}
+			
+    }
+
+    private static boolean isValidTitle(int titleID, int userCheese, int cheeseCost, int sharedCheese, int stolenCheese, int Mahalo, int RatSteal)
+    {
+        if (titleID >= 100 && titleID <= 109) 
+        {
+            if (titleID == 100 || titleID == 101 || titleID == 102 || titleID == 103 || titleID == 104 || titleID == 105) 
+            {
+                return cheeseCost <= userCheese;
+            } 
+            else if (titleID == 106) 
+            {
+                return cheeseCost <= sharedCheese;
+            } 
+            else if (titleID == 107) 
+            {
+                return cheeseCost <= stolenCheese;
+            } 
+            else if (titleID == 109) 
+            {
+                return RatSteal == 1;
+            }
+        } 
+        else 
+        {
+            return false; // Invalid title ID
+        }
+        return true; // Default case
+    }
 }
+	
+

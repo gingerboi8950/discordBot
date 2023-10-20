@@ -1,114 +1,120 @@
-
 import java.sql.SQLException;
 import java.util.Random;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class Steal_cheese 
 {
-
+	private static String RAT_BOT = "https://cdn.discordapp.com/attachments/1159279122518917141/1159279165858644050/rat_bot.png?ex=653071db&is=651dfcdb&hm=b7bc7e1a58f5e2c5e4890a650892392b5f5e811276fb33dfea4dc2a9719625f8&";
+	private static String RAT_THIEF = "https://cdn.discordapp.com/attachments/1159279122518917141/1159279187228631130/rat_thief.png?ex=653071e0&is=651dfce0&hm=327e0a123f6f9e7fe6e0e0f229f72f041c17d168c2c78c2de3213e151843a152&";
 	public static void steal_cheese(SlashCommandInteractionEvent event, EmbedBuilder embed) throws SQLException
 	{
-		
 		String user = event.getOptions().get(0).getAsMember().getAsMention();   
 		int ranNum = randomNumGen();
 		String userId = event.getOptions().get(0).getAsMember().getId();
 		String AuthorId = event.getMember().getId();
 		int userCheese =  SQLcmds.retrieveCheese(userId);
-		System.out.println(userId+"\n"+AuthorId);
+		User username = event.getUser();
 		SQLcmds.checkIfUserExist(userId);
 		SQLcmds.checkIfUserExist(AuthorId);
 		
+		//Converted IDs because comparing two strings failed.
 		double userIdDouble = Double.parseDouble(userId);
 		double authorIdDouble = Double.parseDouble(AuthorId);
 		double botIDDouble =  Double.parseDouble("1069092582707183656");
 		double MahaloIDDouble = Double.parseDouble("236997624870338561");
-        event.deferReply().queue();
+		
+        event.deferReply(true).queue();
 		embed.setColor(0xF7DF47);
 		
 		if(userIdDouble == authorIdDouble) // Catch for self steal
 		{
-			embed.setDescription("Unlike the real world, you cannot steal from yourself.");
-			embed.setImage("https://media.discordapp.net/attachments/747447865013436437/1158219221365432350/image.png?width=931&height=931");
+	        event.getHook().sendMessage("You cannot steal from yourself.").setEphemeral(true).queue();
+
 		}
 		
 		else if(userIdDouble == botIDDouble) // Bot Easter Egg
 		{
-			SQLcmds.updateBotSecret(AuthorId);
-			embed.setTitle("Who do you think you are!");
-			embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1157006427299250338/rat_bot.png?ex=651709b4&is=6515b834&hm=768bb7d22bb2ebd22dffbe71c1bad817d27b11905da0135c66b5062aa63c8af6&");
-			embed.setDescription("Well, I will not be robbed by some **ineffectual**, **privileged**, **effete**, **soft-penis'd**, **debutante**. "
-					+ "You want to start a street fight with me bring it on but you will be surprised by how ugly it gets,"
-					+ " you don't even know my real name- I'm the **fucking lizard king!**");
+			handleBotSteal(event, userIdDouble, botIDDouble, AuthorId, ranNum, username, embed);
 		}
 		else if(userIdDouble == MahaloIDDouble) // Mahalo Easter Egg
 		{
-			SQLcmds.mahaloSecret(userId);
-			if(userCheese > 0)
-			{
-				if(userCheese - ranNum < 0)
-				{
-					SQLcmds.AddCheese(userCheese, AuthorId);
-					SQLcmds.subtractCheese(userCheese, userId);
-					SQLcmds.updateStolenCheese(AuthorId, userCheese);
-					embed.setDescription("You stole "+ userCheese + " cheese from " + user + "!");
-				}
-				else
-				{
-					SQLcmds.AddCheese(ranNum, AuthorId);
-					SQLcmds.subtractCheese(ranNum, userId);
-					SQLcmds.updateStolenCheese(AuthorId, ranNum);
-
-					embed.setDescription("You stole "+ ranNum + " cheese from " + user + "!");
-				}
-				
-				embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1151618881547415713/rat_thief.png");
-			}
-			else
-			{
-				embed.setDescription(user + " has no cheese to steal!");
-				embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1156453226321809468/shrug_rat.png?ex=6515067f&is=6513b4ff&hm=fe3cf8b7b4668b021a15549546eb51c2948792054a4b686a3af0fb35a0716b9f&");
-			}
+			handleMahaloSteal(event, userIdDouble, MahaloIDDouble, userCheese, AuthorId, userId, user, username, ranNum, embed);
 		}
-		
 		else // Handles all other steals
 		{
 			if(userCheese > 0)
 			{
-				if(userCheese - ranNum < 0)
-				{
-					SQLcmds.AddCheese(userCheese, AuthorId);
-					SQLcmds.subtractCheese(userCheese, userId);
-					SQLcmds.updateStolenCheese(AuthorId, userCheese);
-					embed.setDescription("You stole "+ userCheese + " cheese from " + user + "!");
-				}
-				else
-				{
-					SQLcmds.AddCheese(ranNum, AuthorId);
-					SQLcmds.subtractCheese(ranNum, userId);
-					SQLcmds.updateStolenCheese(AuthorId, ranNum);
+				handleNormalSteal(event, userCheese, AuthorId, userId, user, ranNum, embed);
+			}
+		}			
+	}
+	
+	public static void handleNormalSteal(SlashCommandInteractionEvent event, int userCheese, String AuthorId, String userId, String user, int ranNum, EmbedBuilder embed) throws SQLException
+	{
+		int stolenAmount = Math.min(userCheese, ranNum);
+		if(userCheese > 0)
+		{
+				SQLcmds.AddCheese(stolenAmount, AuthorId);
+				SQLcmds.subtractCheese(stolenAmount, userId);
+				SQLcmds.updateStolenCheese(AuthorId, stolenAmount);
+				embed.setDescription("You stole "+ stolenAmount + " cheese from " + user + "!");
+				embed.setImage(RAT_THIEF);
+		        event.getHook().sendMessageEmbeds(embed.build()).queue();
 
-					embed.setDescription("You stole "+ ranNum + " cheese from " + user + "!");
-				}
-				
-				embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1151618881547415713/rat_thief.png");
+		}
+		else
+		{
+	        event.getHook().sendMessage(user + " has no cheese to steal!").setEphemeral(true).queue();
+		}
+	}
+	
+	public static void handleBotSteal(SlashCommandInteractionEvent event, double userIdDouble, double botIDDouble, String AuthorId, int ranNum, User username, EmbedBuilder embed) throws SQLException
+	{
+			int timesStolen = SQLcmds.retrieveBotSecret(AuthorId);
+			if(timesStolen == 1)
+			{
+				embed.setTitle("Clearly you did not learn your lesson.");
+				embed.setDescription("I'll be taking " + ranNum + " cheese from you.");
+				SQLcmds.subtractCheese(ranNum, AuthorId);
+		        event.getHook().sendMessageEmbeds(embed.build()).queue();
 			}
 			else
 			{
-				embed.setDescription(user + " has no cheese to steal!");
-				embed.setImage("https://cdn.discordapp.com/attachments/747447865013436437/1156453226321809468/shrug_rat.png?ex=6515067f&is=6513b4ff&hm=fe3cf8b7b4668b021a15549546eb51c2948792054a4b686a3af0fb35a0716b9f&");
+				sendMessage(username,"You just unlocked \"**The Big Cheese**\" title.\n Use `/change_title` to change your title.");
+				SQLcmds.updateBotSecret(AuthorId);
+				embed.setTitle("Who do you think you are!");
+				embed.setImage(RAT_BOT);
+				embed.setDescription("Well, I will not be robbed by some **ineffectual**, **privileged**, **effete**, **debutante**. "
+						+ "You want to start a street fight with me bring it on but you will be surprised by how ugly it gets.");
+		        event.getHook().sendMessageEmbeds(embed.build()).queue();
 			}
-		}
-		
-		
-        event.getHook().sendMessageEmbeds(embed.build()).queue();;
-	    
-
-		
 	}
 	
-	public static int randomNumGen()
+	public static void handleMahaloSteal(SlashCommandInteractionEvent event, double userIdDouble, double MahaloIDDouble, int userCheese, String AuthorId, String userId, String user, User username, int ranNum, EmbedBuilder embed) throws SQLException
+	{
+		int stolenAmount = Math.min(userCheese, ranNum);
+		sendMessage(username,"You just unlocked \"**The Real Mahalofam**\" title.\n Use `/change_title` to change your title.");
+		SQLcmds.mahaloSecret(userId);
+		if(userCheese > 0)
+		{
+			SQLcmds.AddCheese(stolenAmount, AuthorId);
+			SQLcmds.subtractCheese(stolenAmount, userId);
+			SQLcmds.updateStolenCheese(AuthorId, stolenAmount);
+			embed.setDescription("You stole "+ stolenAmount + " cheese from " + user + "!");
+			embed.setImage(RAT_THIEF);
+	        event.getHook().sendMessageEmbeds(embed.build()).queue();
+
+		}
+		else
+		{
+	        event.getHook().sendMessage(user + " has no cheese to steal!").setEphemeral(true).queue();
+		}
+	}
+	
+	public static int randomNumGen() //Method for generating a random number.
 	{
 		Random rand = new Random();
 		int[] numArr = new int[100];
@@ -127,4 +133,12 @@ public class Steal_cheese
 		num = numArr[index];
 		return num;
 	}
+	
+	public static void sendMessage(User user, String content) //Method that DMs user.
+	{
+	    user.openPrivateChannel()
+	        .flatMap(channel -> channel.sendMessage(content))
+	        .queue();
+	}
+	
 }

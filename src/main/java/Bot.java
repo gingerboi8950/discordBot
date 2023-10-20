@@ -3,19 +3,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
-
-import com.amazonaws.util.IOUtils;
-
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDA.Status;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.OnlineStatus;
 
 
 public class Bot extends ListenerAdapter 
@@ -52,6 +46,13 @@ public class Bot extends ListenerAdapter
 
 		
 		if(testGuild != null)
+			
+			//Moderation Commands
+			testGuild.upsertCommand("set_cheese","Set a user's cheese amount.")
+			.addOption(OptionType.USER, "user", "Select who you want to set cheese for.", true)
+			.addOption(OptionType.INTEGER, "number", "Pick an amount of cheese to set.",true)
+			.queue();
+			
 			testGuild.upsertCommand("sub_cheese","Subtract cheese from a user.")
 				.addOption(OptionType.INTEGER, "number", "The amount of cheese being removed.", true)
 				.addOption(OptionType.USER, "user", "Select who you want to remove cheese from.",true)
@@ -62,6 +63,7 @@ public class Bot extends ListenerAdapter
 				.addOption(OptionType.USER, "user", "Select who you want to remove cheese from.",true)
 				.queue();
 			
+			//Game Commands
 			testGuild.upsertCommand("give_cheese","Give cheese to a user.")
 				.addOption(OptionType.INTEGER, "number", "The amount of cheese being removed.", true)
 				.addOption(OptionType.USER, "user", "Select who you want to remove cheese from.",true)
@@ -78,22 +80,21 @@ public class Bot extends ListenerAdapter
 				.addOption(OptionType.USER, "user", "Select who you want to remove cheese from.",true)
 				.queue();
 			
-			testGuild.upsertCommand("daily","Roll for a random number of cheese.").queue();
+			testGuild.upsertCommand("daily","Roll for a random number of cheese once a day.").queue();
 			
+			testGuild.upsertCommand("weekly","Roll for a random number of cheese once a week.").queue();
+
 			testGuild.upsertCommand("titles","Lists a list of all titles.").queue();
 			
 			testGuild.upsertCommand("change_title","Change your title")
 				.addOption(OptionType.INTEGER, "title_id", "Select the ID of the title you want.",true)
 				.queue();
 			
-			testGuild.upsertCommand("set_cheese","Set a user's cheese amount.")
-				.addOption(OptionType.USER, "user", "Select who you want to set cheese for.", true)
-				.addOption(OptionType.INTEGER, "number", "Pick an amount of cheese to set.",true)
-				.queue();
+			//Gambling Commands 
+			testGuild.upsertCommand("cups","Play cups")
+			.addOption(OptionType.INTEGER, "number", "Select the number of cheese you want to bet.",true)
+			.queue();
 		}
-	
-	
-	
 	
 	
 	public void onReady(ReadyEvent event) 

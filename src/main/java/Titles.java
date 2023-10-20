@@ -1,26 +1,22 @@
-import java.sql.SQLException;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class Titles {
-
-	
-	public static void PrintTitles(SlashCommandInteractionEvent event, EmbedBuilder embed) throws SQLException
-	{	
-		
+	public static void PrintTitles(SlashCommandInteractionEvent event, EmbedBuilder embed) 
+	{			
 			event.deferReply().queue();
-			String title = SQLcmds.printTitles();
-			String cost = SQLcmds.printCost();
-			String id = SQLcmds.printID();
 			embed.setColor(0xF7DF47);
-			embed.addField("ID", id, true);
-			embed.addField("Titles", title, true);
-			embed.addField("Cost", cost +"\nGive away 1500 cheese.\nSteal 1500 cheese.\n?????????\n?????????", true);
-	        event.getHook().sendMessageEmbeds(embed.build()).queue();
-		
-		
+			embed.addField("ID   Title", "`100` Rat King\n`101`"
+					+ " Cheese Connoisseur\n`102`"
+					+ " Cheese Hoarder\n`103` "
+					+ "I have enough to feed my kids\n`104` "
+					+ "Peasant\n`105` "
+					+ "Cheddar Knight\n`106` "
+					+ "Cheddar Fiend\n`107` "
+					+ "The Real Mahalofam\n`108` "
+					+ "The Big Cheese\n"
+					+ "Change titles  using: `/change_title`", false);
+	        event.getHook().sendMessageEmbeds(embed.build()).queue();	
 	}
-	
-	
+
 }
